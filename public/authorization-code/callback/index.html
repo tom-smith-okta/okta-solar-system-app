@@ -1,0 +1,87 @@
+<html>
+
+<head>
+
+	<script>
+
+	var access_token = ""
+
+	window.onload = function() {
+
+		// Check to see if url has any parameters
+		if (window.location.hash) {
+			var urlParams = getParams(window.location.hash.substring(1));
+
+			// Look for access token in parameters
+
+			for (const prop in urlParams) {
+				console.log(prop + ": " + urlParams[prop])
+
+				if (prop == "access_token") {
+					var msg = "<p>SUCCESS! Got an access token! (look in url or console)</p>"
+					msg += "<p><a href = 'https://www.jsonwebtoken.io/' target = '_blank'>Click here to decode the access token</a></p>"
+
+					document.getElementById("msg").innerHTML = msg
+					access_token = urlParams[prop]
+
+					// Show the button
+					document.getElementById("button").style.display="block"
+				}
+			}
+
+			if (access_token == "") {
+				document.getElementById("msg").innerHTML = "could not find an access token in the url."
+			}
+		}
+		else { document.getElementById("msg").innerHTML = "something went wrong with the request." }
+	}
+
+	// send the request to the server-side app
+	function getData() {
+
+		var oReq = new XMLHttpRequest()
+
+		oReq.onload = function (e) {
+			console.log(e.target.response)
+		}
+
+		oReq.open('POST', "/getData")
+		oReq.setRequestHeader('Content-Type', 'application/json')
+		oReq.responseType = 'json'
+		oReq.send('{"access_token": "' + access_token + '"}')
+	}
+
+	// parse the url for parameters, including access token
+	function getParams(hash) {
+
+		var arr = hash.split("&");
+
+		var params = {};
+
+		// convert the url params to an object
+		for (var i = 0; i < arr.length; i++) {
+			var kvp = arr[i].split("=");
+			params[kvp[0]] = kvp[1];
+		}
+
+		return params;
+	}
+	</script>
+</head>
+
+<body>
+
+<div id = "msg">
+</div>
+
+<div id = "button" style="display:none; margin-top: 10px;">
+	<button onclick="getData()" style="background-color: #4CAF50; color: white">Click here to see the planets!</button>
+</div>
+
+<div id = "results" style="display:none; margin-top: 10px;">
+
+</div>
+
+</body>
+
+</html>

@@ -1,0 +1,47 @@
+<html>
+
+<head>
+
+	<script>
+
+	window.onload = function() {
+
+		/** must change oktaTenant and client_id **/
+		/** others are optional **/
+		var oktaTenant = "https://partnerpoc.oktapreview.com"
+		var client_id = "0oackbggxnLe1jjl00h7"
+
+		var auth_server_id = "default"
+		var response_type = "token"
+		var redirect_uri = "http://localhost:8080/authorization-code/callback"
+		var state = "someState"
+		var nonce = "someNonce"
+		var prompt = "login"
+		var scope = "http://myapp.com/scp/silver"
+
+		var url = oktaTenant + "/oauth2/" + auth_server_id + "/v1/authorize?"
+
+		url += "response_type=" + response_type
+		url += "&client_id=" + client_id
+		url += "&redirect_uri=" + redirect_uri
+		url += "&state=" + state
+		url += "&nonce=" + nonce
+		url += "&prompt=" + prompt
+		url += "&scope=" + scope
+
+		var html = "Click <a href = '" + url + "'>here</a> to authenticate"
+
+		document.getElementById("link").innerHTML = html;
+	}
+
+	</script>
+
+</head>
+
+<body>
+
+	<div id = "link"></div>
+
+</body>
+
+</html>
